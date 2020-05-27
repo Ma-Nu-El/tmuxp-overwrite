@@ -1,0 +1,13 @@
+#+TITLE: 
+#+AUTHOR: ma
+ +export_file_name: 
+* Automate overwriting
+:PROPERTIES:
+:header-args: :results silent :padline no :shebang "#!/usr/bin/env bash" :tangle ../bin/overwrite
+:END:
+
+
+#+begin_src shell
+rm ~/.tmuxp/$1
+tmuxp freeze
+#+end_src
