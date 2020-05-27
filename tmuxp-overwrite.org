@@ -1,13 +1,23 @@
 #+TITLE: 
 #+AUTHOR: ma
  +export_file_name: 
+
+Little bash script to automate the process of tmuxp session
+overwriting. This is just a momentary solution until tmuxp adopts
+session overwriting natively.
+
 * Automate overwriting
 :PROPERTIES:
-:header-args: :results silent :padline no :shebang "#!/usr/bin/env bash" :tangle ../bin/overwrite
+:header-args: :results silent :padline no :shebang "#!/usr/bin/env bash" :tangle ../bin/tmuxpoverwrite
 :END:
 
+Warning: it has its own alias incorporated only for development purposes.
+
+#+begin_src shell
+alias tpow=tmuxpoverwrite
+#+end_src
 
 #+begin_src shell
 rm ~/.tmuxp/$1
-tmuxp freeze
+tmuxp freeze ~/.tmuxp/$1
 #+end_src
