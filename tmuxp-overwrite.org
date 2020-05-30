@@ -102,6 +102,7 @@ echo '--depython'
 echo 'remove that '\''python3'\'' line from the frozen file'
 echo '--debash'
 echo 'remove that '\''bash'\'' line from the frozen file'
+echo 'remove that '\''shell_command: bash'\'' line from the frozen file'
 #+end_src
 *** warning
 #+begin_src shell
