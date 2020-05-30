@@ -94,11 +94,14 @@ echo ''
 *** show options
 #+begin_src shell
 echo 'OPTIONS'
-echo '--overwrite (or -o)'
+echo '-o'
+echo '--overwrite'
 echo 'overwrite your EXISTING tmuxp frozen file'
 echo ''
-echo '--depython (or -d)'
+echo '--depython'
 echo 'remove that '\''python3'\'' line from the frozen file'
+echo '--debash'
+echo 'remove that '\''bash'\'' line from the frozen file'
 #+end_src
 *** warning
 #+begin_src shell
@@ -219,7 +222,7 @@ Once the file is generated, it should contain a line that says
 
 *** if
 #+begin_src shell
-if [[ "$1" == "-d" ]] || [[ "$1" == "--depython" ]]
+if [[ "$1" == "--depython" ]]
 then
 #+end_src
 
@@ -244,12 +247,69 @@ cat $AUX_FILE > $YOUR_FILE
 
 *** done check
 #+begin_src shell
-echo 'file depythoned.'
+echo 'done: file depythoned.'
 #+end_src
 *** fi
 #+begin_src shell
 fi
 #+end_src
+** debash
+*** case
+When you ~freeze~ a session that has at least one window with the bare
+command line in it, ~tmuxp freeze~ actually remembers that too and,
+much like the python3 thing, also does it with ~bash~. That is less of
+a problem that the ~python3~ case, but still when you ~tmuxp load~
+you'll end up with unnecessary shell nesting. Try it out yourself:
+type 
+
+#+begin_example
+echo $SHLVL
+#+end_example
+
+and see the output.
+
+- When you open a terminal it's 1
+- When you open tmux inside a terminal it's 2
+- When you ~tmuxp load~ it's 3. However when I created that session to
+  be frozen it was 2. One shell nesting level extra.
+  
+The next script do the exact same thing that the ~python3~ case but
+now for the ~bash~ command being written in the frozen file.
+*** code
+**** if
+#+begin_src shell
+if [[ "$1" == "--debash" ]]
+then
+#+end_src
+
+**** heads up
+#+begin_src shell
+echo 'Warning: if you actually are running anything that contains the word'
+echo ''\''bash'\'' and gets saved into the session, it could mess with your'
+echo 'tmuxp freeze file.'
+echo ''
+echo 'A backup of your file will be stored in'
+echo '/tmp/tmuxp/frozenPreCleaning/'
+echo 'in case anything goes wrong.'
+#+end_src
+
+**** the actual thing
+#+begin_src shell
+AUX_FILE=$FILE_LOCATION/auxFile
+cat $YOUR_FILE > ~/.tmuxp/depython/$SESSION_NAME.$EXTENSION
+sed '/shell_command:\ bash/d' $YOUR_FILE > $AUX_FILE
+cat $AUX_FILE > $YOUR_FILE
+#+end_src
+
+**** done check
+#+begin_src shell
+echo 'done: file debashed.'
+#+end_src
+**** fi
+#+begin_src shell
+fi
+#+end_src
+
 ** exit
 #+begin_src shell
 exit
