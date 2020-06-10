@@ -274,7 +274,7 @@ and see the output.
 - When you ~tmuxp load~ it's 3. However when I created that session to
   be frozen it was 2. One shell nesting level extra.
   
-The next script do the exact same thing that the ~python3~ case but
+The next script does the exact same thing that the ~python3~ case but
 now for the ~bash~ command being written in the frozen file.
 *** code
 **** if
